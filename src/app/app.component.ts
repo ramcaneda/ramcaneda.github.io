@@ -13,10 +13,10 @@ export class AppComponent implements OnInit {
 
   async ngOnInit(){
     let cursorBlink = setInterval(()=>{
-      if(this.cursor.length == 0){
+      if(this.cursor.trim().length == 0){
         this.cursor = this.cursorChar;
       }else{
-        this.cursor = '';
+        this.cursor = ' ';
       }
     }, 200);
 

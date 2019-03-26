@@ -1,4 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+$container-padding: 50px;
+$container-padding-small: 5px;
+$terminal-border-size: 10px;
+
 html, body{
   height: 100%;
   margin: 0;
@@ -17,6 +21,15 @@ html, body{
   }
 }
 
+@keyframes scanline{
+  0%{
+    top: -100px;
+  }
+  100%{
+    top: 1000px;
+  }
+}
+
 body {
   display: flex;
   flex-flow: column;
@@ -25,7 +38,10 @@ body {
     flex: 1 1 auto;
     display: flex;
     flex-flow: column;
-    border: 50px solid black;
+    padding: $container-padding;
+    @media screen and (max-width: 375px) {
+      padding: $container-padding-small;
+    }
     .terminal-border{
       flex: 1 1 auto;
       display: flex;
@@ -37,8 +53,26 @@ body {
         flex: 1 1 auto;
         padding: 20px 20px;
         background-image: radial-gradient(#383838,#222121,#0a0a0a);
-        border: 10px solid transparent;
+        border: $terminal-border-size solid transparent;
         border-radius: 10px;
+      }
+      
+      .terminal::before{
+        content: " ";
+        display: block;
+        position: absolute;
+        top: -100px;
+        left: 0;
+        right: 0;
+        height: 100px;
+        background: linear-gradient(transparent, rgba(216, 216, 216, 0.2) 90%, transparent);
+        transform: rotate(-0.5deg) skewX(-0.5deg);
+        margin: $container-padding $container-padding+$terminal-border-size;
+        @media screen and (max-width: 375px) {
+          margin: $container-padding-small $container-padding-small+$terminal-border-size;
+        }
+        z-index: 2;
+        animation: scanline 2s infinite linear;
       }
     }
     .terminal-border::before{
@@ -52,22 +86,29 @@ body {
       background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
       z-index: 2;
       background-size: 100% 2px, 3px 100%;
+      margin: $container-padding;
+      @media screen and (max-width: 375px) {
+        margin: $container-padding-small $container-padding-small+$terminal-border-size;
+      }
       pointer-events: none;
     }
       
     .terminal-border::after {
-        content: " ";
-        display: block;
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        background:transparentize(#0a0a0a,0.9);
-        opacity: 0;
-        z-index: 2;
-        pointer-events: none;
-        animation: flicker 0.15s infinite;
+      content: " ";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background: transparentize(#0a0a0a,0.9);
+      z-index: 2;
+      pointer-events: none;
+      margin: $container-padding;
+      @media screen and (max-width: 375px) {
+        margin: $container-padding-small $container-padding-small+$terminal-border-size;
+      }
+      animation: flicker 0.15s infinite;
     }
   }
 }
