@@ -11,23 +11,8 @@ html, body{
   font-family: monospace;
   border: beige;
 }
-
-@keyframes flicker{
-  $steps:20;
-  @for $i from 0 through $steps{
-    #{percentage($i*(1/$steps))}{
-      opacity:random();
-    }
-  }
-}
-
-@keyframes scanline{
-  0%{
-    top: -100px;
-  }
-  100%{
-    top: 1000px;
-  }
+a {
+  color: #00FF37
 }
 
 body {
@@ -39,7 +24,7 @@ body {
     display: flex;
     flex-flow: column;
     padding: $container-padding;
-    @media screen and (max-width: 375px) {
+    @media screen and (max-width: 415px) {
       padding: $container-padding-small;
     }
     .terminal-border{
@@ -49,6 +34,8 @@ body {
       background: #0a0a0a;
       border: 10px solid black;
       border-radius: 25px;
+      // position: relative; //clipping for crt lines. would slow down app when on desktop screens
+      // overflow: hidden; 
       .terminal {
         flex: 1 1 auto;
         padding: 20px 20px;
@@ -56,59 +43,20 @@ body {
         border: $terminal-border-size solid transparent;
         border-radius: 10px;
       }
-      
-      .terminal::before{
+      //crt lines
+      &:before{
         content: " ";
         display: block;
         position: absolute;
-        top: -100px;
+        top: 0;
         left: 0;
+        bottom: 0;
         right: 0;
-        height: 100px;
-        background: linear-gradient(transparent, rgba(216, 216, 216, 0.2) 90%, transparent);
-        transform: rotate(-0.5deg) skewX(-0.5deg);
-        margin: $container-padding $container-padding+$terminal-border-size;
-        @media screen and (max-width: 375px) {
-          margin: $container-padding-small $container-padding-small+$terminal-border-size;
-        }
+        background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
         z-index: 2;
-        animation: scanline 2s infinite linear;
+        background-size: 100% 2px, 3px 100%;
+        pointer-events: none;
       }
-    }
-    .terminal-border::before{
-      content: " ";
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-      z-index: 2;
-      background-size: 100% 2px, 3px 100%;
-      margin: $container-padding;
-      @media screen and (max-width: 375px) {
-        margin: $container-padding-small $container-padding-small+$terminal-border-size;
-      }
-      pointer-events: none;
-    }
-      
-    .terminal-border::after {
-      content: " ";
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      background: transparentize(#0a0a0a,0.9);
-      z-index: 2;
-      pointer-events: none;
-      margin: $container-padding;
-      @media screen and (max-width: 375px) {
-        margin: $container-padding-small $container-padding-small+$terminal-border-size;
-      }
-      animation: flicker 0.15s infinite;
     }
   }
 }

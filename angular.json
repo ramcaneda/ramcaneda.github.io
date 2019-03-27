@@ -10,7 +10,7 @@
       "prefix": "app",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "less"
+          "style": "scss"
         }
       },
       "architect": {
@@ -134,12 +134,6 @@
           }
         }
       }
-    }
-  },
-  "defaultProject": "ramcaneda",
-  "schematics": {
-    "@schematics/angular:component": {
-      "styleext": "scss"
     }
   }
 }
