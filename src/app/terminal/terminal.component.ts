@@ -100,7 +100,7 @@ export class TerminalComponent implements AfterViewInit {
           this.target += i;
         }
         resolve();
-      }, 5)
+      }, 10)
     });
   }
 
