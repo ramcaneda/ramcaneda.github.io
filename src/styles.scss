@@ -24,7 +24,7 @@ body {
     display: flex;
     flex-flow: column;
     padding: $container-padding;
-    @media screen and (max-width: 415px) {
+    @media screen and (max-width: 500px) {
       padding: $container-padding-small;
     }
     .terminal-border{
@@ -32,15 +32,15 @@ body {
       display: flex;
       flex-flow: column;
       background: #0a0a0a;
-      border: 10px solid black;
+      // border: 1px solid black;
       border-radius: 25px;
       // position: relative; //clipping for crt lines. would slow down app when on desktop screens
       // overflow: hidden; 
       .terminal {
         flex: 1 1 auto;
-        padding: 20px 20px;
+        padding: 5px;
         background-image: radial-gradient(#383838,#222121,#0a0a0a);
-        border: $terminal-border-size solid transparent;
+        // border: $terminal-border-size solid transparent;
         border-radius: 10px;
       }
       //crt lines
