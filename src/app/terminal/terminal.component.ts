@@ -1,66 +1,84 @@
-import { Component, OnInit, Input, ContentChild, ElementRef, Renderer, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, Input, ContentChild, ElementRef, Renderer, AfterViewInit, ViewChild } from '@angular/core';
+import { TerminalService, QueueItem } from './terminal.service';
 
 @Component({
   selector: 'terminal',
   templateUrl: './terminal.component.html',
   styleUrls: ['./terminal.component.scss']
 })
-export class TerminalComponent implements AfterViewInit {
+export class TerminalComponent implements AfterViewInit {  
   @Input() 
-  content: String;
+  displayCursor: boolean = true;
+
+  @Input()
+  writeDelay = 50;
 
   @ContentChild(TerminalComponent)
   element: any;
-
-  @ViewChild('terminalOut')
-  elementOut: any
   
+  textToWrite = [];
 
   target: any;
   propertyKey: any;
   isFlushed = false;
 
-  constructor(private elt:ElementRef, private renderer:Renderer) {
+  constructor(private elt:ElementRef, private renderer:Renderer, private terminal: TerminalService) {
   }
 
   onClick(){
     this.isFlushed = true;
   }
+
+  get cursorClass(){
+    return this.displayCursor == true?'cursor':'';
+  }
   
   async ngAfterViewInit() {
-    var textNode = this.elt.nativeElement.childNodes[0];
-    var textToWrite = [];
-    for(var i = 0; i < textNode.childNodes.length; i++){
-      let target = textNode.childNodes[i];
-      if(target.textContent.trim().length == 0){
-        continue;
-      }
-      textToWrite.push({
-        text: target.textContent,
-        target,
-        propKey: 'textContent'
-      })
-      let text = target.textContent;
-      this.setTarget(target, 'textContent');
-      await this.clearScreen();
-    }
-    console.log(textToWrite);
-    for(var i = 0; i< textToWrite.length; i++){
-      let t = textToWrite[i];
+    // await this.readItem(this.elt.nativeElement);
+    await this.readElement(this.elt.nativeElement);
+    for(var i = 0; i< this.textToWrite.length; i++){
+      let t = this.textToWrite[i];
       this.setTarget(t.target, t.propKey);
+      if(this.displayCursor)
+      this.renderer.setElementClass(t.parent, 'cursor', true);
       await this.write(t.text);
+      if(i+1 < this.textToWrite.length)
+        this.renderer.setElementClass(t.parent, 'cursor', false);
     }
-    
-    var textInput = textNode.innerText.trim();
-    var inputs = textInput.split('\n');
-    // inputs.shift();
-
-    console.log(inputs);
-    // await this.clearScreen()
-    // await this.write(textInput);
+    // await this.terminal.run();
   }
 
-  setTarget(target, propertyKey){
+  async readElement(target, parent=null){
+    if(target.nodeType == 3){
+      this.textToWrite.push({
+        text: target.data,
+        target,
+        parent,
+        propKey: 'textContent'
+      })
+      
+      this.setTarget(target);
+      await this.clearScreen();
+    }
+    for(var i = 0; i < target.childNodes.length; i++){
+      await this.readElement(target.childNodes[i], target);
+    }
+  }
+
+  async readItem(target, parent=null){
+    if(target.nodeType == 3){
+      this.terminal.EnqueueTask(new QueueItem(
+        target.data,
+        target,
+        parent
+      ));
+    }
+    for(var i = 0; i < target.childNodes.length; i++){
+      await this.readItem(target.childNodes[i], target);
+    }
+  }
+
+  setTarget(target, propertyKey = 'data'){
     this.target = target;
     this.propertyKey = propertyKey;
   }
@@ -100,7 +118,7 @@ export class TerminalComponent implements AfterViewInit {
           this.target += i;
         }
         resolve();
-      }, 10)
+      }, this.writeDelay)
     });
   }
 

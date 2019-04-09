@@ -23,9 +23,6 @@
         background: #00FF37;
         color: black;
       }
-      &::before{
-        content:'> ';
-      }
     }
   }
   .terminal-header{
@@ -46,7 +43,6 @@
     height: 100%;
   }
   .terminal-footer{
-    text-align: right;
     padding: 0 40px 5px;
   }
 }
