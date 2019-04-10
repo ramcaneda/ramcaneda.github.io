@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { TerminalService } from 'src/app/terminal/terminal.service';
+import { TerminalService } from 'src/app/shared';
 
 @Component({
   selector: 'app-nav',
