@@ -12,8 +12,18 @@ html, body{
   border: beige;
 }
 a {
-  color: #00FF37
+  color: #00FF37;
+  text-decoration: none;
 }
+
+ul {
+  padding-inline-start: 0;
+  li {
+    list-style: none;
+    padding-inline-start: 0;
+  }
+}
+
 
 body {
   display: flex;
@@ -72,5 +82,45 @@ body {
   }
   100% {
     content: '█';
+  }
+}
+.terminal-container {
+  display: grid;
+  height: 100%;
+  @media screen and (max-width: 341px) {
+    grid-template-rows: 
+      100px
+  }
+  grid-template-rows: 
+    70px;
+  .terminal-link{
+    text-decoration: none;
+    @media screen and (max-width: 500px) {
+      display: block;
+    }
+    &:hover, &:active, &:focus{
+      background: #00FF37;
+      color: black;
+    }
+  }
+  .terminal-header{
+    border-style: solid;
+    border-width: 0 0 3px 0;
+    padding: 0 40px 5px;
+    grid-row: 1;
+    h1 {
+      margin-bottom: 0px;
+    }
+    a.email{
+      text-align: right;
+    }
+  }
+  .terminal-body{
+    // padding: 10px; 
+    padding: 0 40px;
+    height: 100%;
+  }
+  .terminal-footer{
+    padding: 0 40px 5px;
   }
 }
