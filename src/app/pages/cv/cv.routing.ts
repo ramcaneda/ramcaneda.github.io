@@ -4,7 +4,7 @@ import { NavComponent } from './nav/nav.component';
 import { TechnicalSkillsComponent } from './technical.skills/technical.skills.component';
 
 
-const cvRoutes: Routes = [
+export const cvRoutes: Routes = [
   { path: '', component: IndexComponent,
     children: [
       { path: '', pathMatch: 'full', component: NavComponent },
@@ -12,5 +12,3 @@ const cvRoutes: Routes = [
     ]
   }
 ];
-
-export default cvRoutes;
